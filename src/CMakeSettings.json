@@ -2,8 +2,8 @@
   "environments": [
     {
       "NINJA_STATUS": "[${name} %f/%t %es] ",
-      "BUILD_ROOT": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\build\\${name}",
-      "INSTALL_ROOT": "${env.USERPROFILE}\\CMakeBuilds\\${workspaceHash}\\install\\${name}"
+      "BUILD_ROOT": "${projectDir}\\..\\build\\${name}",
+      "INSTALL_ROOT": "${projectDir}\\..\\install\\${name}"
     }
   ],
   "configurations": [

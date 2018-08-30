@@ -29,3 +29,6 @@
 /.vs/fig
 
 \.vs/
+
+# Project output files.
+build/

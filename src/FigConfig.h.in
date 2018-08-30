@@ -1,0 +1,4 @@
+// The CMake-configured options and settings for Fig.
+#define Fig_VERSION_MAJOR @Fig_VERSION_MAJOR@
+#define Fig_VERSION_MINOR @Fig_VERSION_MINOR@
+#define Fig_VERSION_PATCH @Fig_VERSION_PATCH@

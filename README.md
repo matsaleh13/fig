@@ -10,10 +10,12 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
  1. Learn plugin dev in C++.
  1. Learn component-based dev in C++.
 
-
-
 ## Features
  1. Universal config semantics, independent of persistence format.
+ 1. Cross-platform:
+    - Windows
+    - Linux
+    - MacOS and others as possible.
  1. Simple and flexible API(s):
     - Key/value with path-oriented keys.
     - Object-based.
@@ -72,13 +74,15 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
 
 ## 3rd Party Libs to consider
  1. XML - Tiny XML (2)
+ 1. JSON - taocpp/json https://github.com/taocpp/json
  1. Compression - zlib
  1. Framework - Boost
  1. File system - Cppfs: https://github.com/cginternals/cppfs
- 1. Templating - mstch (mustache): https://mustache.github.io/ 
+ 1. Templating - mstch (mustache): https://mustache.github.io/
+
 
 ## Project Structure
-
+### Sub-folders
     /fig
         /bin
             /<platform>
@@ -102,7 +106,7 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
             /<sub-project>
                 /<platform>
 
-### Sub-folder Documents
+### Sub-folder Details
  - [/bin](./bin/README.md)
  - [/build](./build/README.md)
  - [/doc](./doc/README.md)
@@ -114,3 +118,5 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
  - [/test](./test/README.md)
 
     
+## Related Documentation
+- [Cross-Platform Notes](./doc/cross-platform.md)

@@ -1,23 +1,27 @@
 # Fig Cross-Platform Notes
 
 ## Target Platforms
-
 - Windows (all currrently supported variants)
 - Linux (test on Ubuntu and RH variants)
 - OSX (in theory)
+- 64 and 32 bit binaries.
 
+## Target Deployments
+- Headers + static libs.
+- Headers + shared libs.
+- Source code + project files.
 
 ## Resources
-
 - https://www.backblaze.com/blog/10-rules-for-how-to-write-cross-platform-code/
 - https://stackoverflow.com/questions/45232308/cross-platform-api-development-for-windows-linux-et-al
 - https://marketplace.visualstudio.com/items?itemName=VisualCppDevLabs.VisualCforLinuxDevelopment
 - https://docs.microsoft.com/en-us/cpp/linux/cmake-linux-project?view=vs-2017
-
+- https://blogs.msdn.microsoft.com/vcblog/2017/04/11/linux-development-with-c-in-visual-studio/
+- https://www.codepool.biz/cmake-cc-windows-linux-macos.html
+- https://atomheartother.github.io/c++/2018/07/12/CPPDynLib.html
 
 
 ## Guiding Principles
-
 - Simultaneously Develop for Different Platforms
     - See https://www.backblaze.com/blog/10-rules-for-how-to-write-cross-platform-code/
     - In practice, build regularly on both Windows and one Linux target.
@@ -39,8 +43,12 @@
 ## Project Considerations
 - Use Visual Studio + CMake for both Windows and Linux?
 - What about clang?
-- Use container for remote Linux target(s).
+- Use container for remote Linux target(s), and/or WSL.
 - Consider Premake: https://premake.github.io/
+
+## Library Considerations
+- Both static (.lib, .a) and dynamic (.dll, .so)
+
 
 
 

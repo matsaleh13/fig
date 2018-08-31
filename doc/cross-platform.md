@@ -19,6 +19,10 @@
 - https://blogs.msdn.microsoft.com/vcblog/2017/04/11/linux-development-with-c-in-visual-studio/
 - https://www.codepool.biz/cmake-cc-windows-linux-macos.html
 - https://atomheartother.github.io/c++/2018/07/12/CPPDynLib.html
+- [C++ - Unicode Encoding Conversions with STL Strings and Win32 APIs](https://msdn.microsoft.com/en-us/magazine/mt763237.aspx?f=255&MSPPError=-2147217396)
+- [Exceptions and Error Handling](https://isocpp.org/wiki/faq/exceptions)
+- [Practical C++ Error Handling in Hybrid Environments (2007)](http://collaboration.cmc.ec.gc.ca/science/rpn/biblio/ddj/Website/articles/DDJ/2007/0703/070201gs01/070201gs01.html)
+
 
 
 ## Guiding Principles
@@ -34,8 +38,9 @@
     - Concrete classes with platform-specific .cpp files, preferably in platform-specific folders.
     - Use PIMPL pattern.
 - Use Unicode.
-    - UTF-8, not UTF-16 (windows specific)
-    - TODO: what character type? char or wchar_t?
+    - UTF-8, not UTF-16 (windows specific).
+    - However, as a library, we may need to support both (or all).
+    - Support std::string/char and std::wstring/wchar_t.
 - Avoid 3rd party "application frameworks":
     - e.g. Qt
     - If necessary use Boost only.
@@ -53,3 +58,4 @@
 
 
 
+ 

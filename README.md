@@ -71,14 +71,17 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
  1. Build with clang on all platforms.
  1. Use 3rd party libs for basic functionality.
  1. See Boost project for structure ideas.
+ 1. Avoid exceptions to support use in games and embedded applications that don't use them.
 
 ## 3rd Party Libs to consider
  1. XML - Tiny XML (2)
- 1. JSON - taocpp/json https://github.com/taocpp/json
+ 1. JSON - [taocpp/json](https://github.com/taocpp/json)
  1. Compression - zlib
  1. Framework - Boost
+ 1. Cross-platform utilities - [cubiclesoft/cross-platform-cpp](https://github.com/cubiclesoft/cross-platform-cpp)
  1. File system - Cppfs: https://github.com/cginternals/cppfs
- 1. Templating - mstch (mustache): https://mustache.github.io/
+ 1. Templating - [mstch (mustache)](https://mustache.github.io/)
+ 1. Unicode strings - [ICU - International Components for Unicode](http://site.icu-project.org/)
 
 
 ## Project Structure

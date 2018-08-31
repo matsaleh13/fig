@@ -22,3 +22,22 @@ configure_file (
 # so that we'll find FigConfig.h.
 include_directories("${PROJECT_BINARY_DIR}")
 
+# Add sub-project folders
+add_subdirectory(fig-core)
+add_subdirectory(fig-coredyn)
+add_subdirectory(fig-cli)
+
+# Files
+file(GLOB core-headers fig-core/*.h)
+file(GLOB core-cppfiles fig-core/*.cpp)
+#file(GLOB coredyn-headers fig-coredyn/*.h)
+#file(GLOB coredyn-cppfiles fig-coredyn/*.cpp)
+#file(GLOB cli-headers fig-cli/*.h)
+#file(GLOB cli-cppfiles fig-cli/*.cpp)
+
+# Binary targets
+add_library(fig-core STATIC ${core-headers} ${core-cppfiles})
+#add_library(fig-coredyn SHARED ${coredyn-headers} ${coredyn-cppfiles})
+#add_executable(fig-cli ${cli-headers} ${cli-cppfiles})
+
+

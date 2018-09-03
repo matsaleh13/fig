@@ -1,4 +1,4 @@
-project (fig-coredyn)
+project (fig-util)
 
 message ("DEBUG INFO...")
 message ("CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
@@ -8,4 +8,4 @@ message ("PROJECT_BINARY_DIR: ${PROJECT_BINARY_DIR}")
 file(GLOB headers *.h)
 file(GLOB cppfiles *.cpp)
 
-add_library(fig-coredyn STATIC ${headers} ${cppfiles})
+add_library(fig-util STATIC ${headers} ${cppfiles})

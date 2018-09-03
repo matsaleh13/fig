@@ -1,4 +1,4 @@
-# Fig Cross-Platform Notes
+# Fig Cross-Platform Development
 
 ## Target Platforms
 - Windows (all currrently supported variants)
@@ -12,20 +12,17 @@
 - Source code + project files.
 
 ## Resources
-- https://www.backblaze.com/blog/10-rules-for-how-to-write-cross-platform-code/
+- [Brian's 10 Rules for how to write cross-platform code](https://www.backblaze.com/blog/10-rules-for-how-to-write-cross-platform-code/)
 - https://stackoverflow.com/questions/45232308/cross-platform-api-development-for-windows-linux-et-al
 - https://marketplace.visualstudio.com/items?itemName=VisualCppDevLabs.VisualCforLinuxDevelopment
 - https://docs.microsoft.com/en-us/cpp/linux/cmake-linux-project?view=vs-2017
 - https://blogs.msdn.microsoft.com/vcblog/2017/04/11/linux-development-with-c-in-visual-studio/
 - https://www.codepool.biz/cmake-cc-windows-linux-macos.html
-- https://atomheartother.github.io/c++/2018/07/12/CPPDynLib.html
+- [Writing a Cross-Platform Dynamic Library](https://atomheartother.github.io/c++/2018/07/12/CPPDynLib.html)
 - [C++ - Unicode Encoding Conversions with STL Strings and Win32 APIs](https://msdn.microsoft.com/en-us/magazine/mt763237.aspx?f=255&MSPPError=-2147217396)
-- [Exceptions and Error Handling](https://isocpp.org/wiki/faq/exceptions)
-- [Practical C++ Error Handling in Hybrid Environments (2007)](http://collaboration.cmc.ec.gc.ca/science/rpn/biblio/ddj/Website/articles/DDJ/2007/0703/070201gs01/070201gs01.html)
 
 
-
-## Guiding Principles
+## Cross-Platform Guiding Principles
 - Simultaneously Develop for Different Platforms
     - See https://www.backblaze.com/blog/10-rules-for-how-to-write-cross-platform-code/
     - In practice, build regularly on both Windows and one Linux target.

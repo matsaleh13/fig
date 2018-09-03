@@ -1,8 +1,9 @@
 # Fig 
+
 A Generalized and Extensible Configuration Library writtten in Modern C++
 
-
 ## Project Goals
+
  1. Create the config system I would like to use.
  1. Learn to code modern C++.
  1. Use to develop a portfolio of my current work.
@@ -11,6 +12,7 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
  1. Learn component-based dev in C++.
 
 ## Features
+
  1. Universal config semantics, independent of persistence format.
  1. Cross-platform:
     - Windows
@@ -36,7 +38,7 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
     - Compressed file?
     - sqlite?
     - mmap file?
-    * Windows Registry
+    - Windows Registry
  1. Prebuilt input (parser) and output (builder) providers: 
     - XML
     - INI
@@ -60,11 +62,10 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
     - CLI for validation/manipulation/transformation.
     - Support C++ 11 and above.
     - Auto-reload changed files.
-    * Read and write config data.
-
-
+    - Read and write config data.
 
 ## Development Considerations
+
  1. Develop on Windows and Linux in parallel (i.e. containers/WSL)
  1. TDD.
  1. Git, but not GitHub (private repo to start).
@@ -74,18 +75,21 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
  1. Avoid exceptions to support use in games and embedded applications that don't use them.
 
 ## 3rd Party Libs to consider
- 1. XML - Tiny XML (2)
- 1. JSON - [taocpp/json](https://github.com/taocpp/json)
- 1. Compression - zlib
- 1. Framework - Boost
- 1. Cross-platform utilities - [cubiclesoft/cross-platform-cpp](https://github.com/cubiclesoft/cross-platform-cpp)
- 1. File system - Cppfs: https://github.com/cginternals/cppfs
+
+ 1. XML - [Poco](http://pocoproject.org/) | Tiny XML (2)
+ 1. JSON - [Poco](http://pocoproject.org/) | [taocpp/json](https://github.com/taocpp/json)
+ 1. Compression - zlib [Poco](http://pocoproject.org/)
+ 1. Misc utils - [Poco](http://pocoproject.org/)
+ 1. Network - [Poco](http://pocoproject.org/) | [cpp-netlib](http://cpp-netlib.org/)
+ 1. Cross-platform utilities - [Poco](http://pocoproject.org/) | [cubiclesoft/cross-platform-cpp](https://github.com/cubiclesoft/cross-platform-cpp)
+ 1. File system - [Poco](http://pocoproject.org/) | [Cppfs](https://github.com/cginternals/cppfs)
  1. Templating - [mstch (mustache)](https://mustache.github.io/)
  1. Unicode strings - [ICU - International Components for Unicode](http://site.icu-project.org/)
 
-
 ## Project Structure
+
 ### Sub-folders
+
     /fig
         /bin
             /<platform>
@@ -110,16 +114,21 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
                 /<platform>
 
 ### Sub-folder Details
- - [/bin](./bin/README.md)
- - [/build](./build/README.md)
- - [/doc](./doc/README.md)
- - [/extern](./extern/README.md)
- - [/include](./include/README.md)
- - [/lib](./lib/README.md)
- - [/proj](./proj/README.md)
- - [/src](./src/README.md)
- - [/test](./test/README.md)
 
-    
+- [/bin](./bin/README.md)
+- [/build](./build/README.md)
+- [/doc](./doc/README.md)
+- [/extern](./extern/README.md)
+- [/include](./include/README.md)
+- [/lib](./lib/README.md)
+- [/proj](./proj/README.md)
+- [/src](./src/README.md)
+- [/test](./test/README.md)
+
 ## Related Documentation
+
 - [Cross-Platform Notes](./doc/cross-platform.md)
+- [Fig Coding Standards and Policies](./doc/coding-standards.md)
+- [Fig Development Log](./doc/dev-log.md)
+
+## Resources

@@ -37,13 +37,15 @@
 
 ## Error Handling
 
-- All Fig deployable libraries should be safe to compile with `-fno-exceptions` or equivalent.
+- All Fig deployable libraries should be safe to compile with `-fno-exceptions` or equivalent, where "safe" means std::terminate instead of invalid program state.
 - Don't throw or catch exceptions (unfortunately).
   - This is so that Fig can be used in projects that do not use or explicitly disable exceptions, such as games and embedded applications.
 - Before calling any library function (e.g. `std::`) code that throws exceptions, test for the error conditions first and don't call it.
 - Consider using exception-free implementations of `std::`.
+- Known limitations:
+  - Any call to std:: function that throws will cause std::terminate.
 - Consider wrapper interfaces that throw as an alternate for consumers who prefer it.
-- Consider implementing a `Return<T E>` abstraction as described in [Exceptions vs expected: Let's find a compromise](https://foonathan.net/blog/2017/12/04/exceptions-vs-expected.html).
+- Consider implementing a `Return<T E>` abstraction as described in [Exceptions vs expected: Let's find a compromise](https://foonathan.net/blog/2017/12/04/exceptions-vs-expected.html); also: [Outcome](https://ned14.github.io/outcome/) (NOTE: https://lists.boost.org/boost-announce/2017/06/0510.php)
 
 ## Object Initialization
 
@@ -131,3 +133,5 @@
 - [Exceptions and Error Handling](https://isocpp.org/wiki/faq/exceptions)
 - [Practical C++ Error Handling in Hybrid Environments (2007)](http://collaboration.cmc.ec.gc.ca/science/rpn/biblio/ddj/Website/articles/DDJ/2007/0703/070201gs01/070201gs01.html)
 - [Exceptions vs expected: Let's find a compromise](https://foonathan.net/blog/2017/12/04/exceptions-vs-expected.html) for more information.
+- [Outcome 2.0 Library](https://ned14.github.io/outcome/)
+- [Handling STL errors without exceptions](https://code-examples.net/en/q/3b0ee3)

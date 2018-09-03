@@ -85,6 +85,7 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
  1. File system - [Poco](http://pocoproject.org/) | [Cppfs](https://github.com/cginternals/cppfs)
  1. Templating - [mstch (mustache)](https://mustache.github.io/)
  1. Unicode strings - [ICU - International Components for Unicode](http://site.icu-project.org/)
+ 1. Error Handling - [Outcome 2.0 Library](https://ned14.github.io/outcome/)
 
 ## Project Structure
 

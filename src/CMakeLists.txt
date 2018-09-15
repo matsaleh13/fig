@@ -27,4 +27,5 @@ add_subdirectory(fig-util)
 add_subdirectory(fig-core)
 add_subdirectory(fig-coredyn)
 add_subdirectory(fig-cli)
+# add_subdirectory(test)
 

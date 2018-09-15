@@ -17,4 +17,13 @@
   - `"installRoot"` maps to CMake's `XXX` variable.
 - MSVS uses its own install of CMake, located at 
 
+## Visual Studio Code Specific
+
+- Using CMakeTools extension.
+  - Expects top-level CMakeTexts to be in ${workspaceRoot} folder. 
+    - Changed this in .vscode/settings.json to ${workspaceRoot}/src, but did not fix.
+    - Had to create a vscode workspace for the top level folder (i.e. C:\Dev\Fig\fig\fig.code-workspace).
+  
+
+
 ## General

@@ -72,5 +72,88 @@
 
 ## 2018-09-03
 
+- Research:
+  1. CMake with multiple projects.
+  1. Unit testing with CMake.
+- Trying integration GoogleTests with CMake. Working through this: [Setting up CMake for Google Test](https://www.testcookbook.com/book/cpp/setting-up-cmake-google-test.html).
+- Installed cmake via choco.
 
+## 2018-09-08
 
+- Installed Ninja on dev system via choco.
+
+## 2018-09-15
+
+- Finally got CMakeTools extension for VSCode (mostly) working.
+  - Kept getting error: "You do not have a CMakeLists.txt file", even though I did.
+  - CMakeTools looks for the CML.txt in the `${workspaceRoot}` folder by default.
+  - You can override this in `.vscode/settings.json` with the `cmake.sourceDirectory` property. However, that did not work immediately.
+  - I also had to create a VSCode "workspace" file, `fig.code-workspace` in the project root folder. Once I did that, CMakeTools correctly found my CML.txt file in `${workspaceRoot}/src`.
+- CMake in some kind of infinite loop because of an error in my `fig/src/test/CMakeLists.txt` file.
+  - Temporarily disabled by commenting out the `add_subdirectory(test)` command in the root CML.txt file.
+- Also getting repeated debug output for some reason:
+
+```
+[cmake] DEBUG INFO FOR Fig...
+[cmake] DEBUG INFO FOR Fig...
+[cmake] DEBUG INFO FOR Fig...
+[cmake] DEBUG INFO FOR Fig...
+[cmake] DEBUG INFO FOR Fig...
+[cmake] DEBUG INFO FOR Fig...
+[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
+[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
+[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
+[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
+[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
+[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
+[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src
+[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src
+[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src
+[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src
+[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src
+[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src
+[cmake] PROJECT_BINARY_DIR: E:/Dev/Fig/fig/build
+[cmake] PROJECT_BINARY_DIR: E:/Dev/Fig/fig/build
+[cmake] PROJECT_BINARY_DIR: E:/Dev/Fig/fig/build
+[cmake] PROJECT_BINARY_DIR: E:/Dev/Fig/fig/build
+[cmake] PROJECT_BINARY_DIR: E:/Dev/Fig/fig/build
+[cmake] PROJECT_BINARY_DIR: E:/Dev/Fig/fig/build
+[cmake] DEBUG INFO...
+[cmake] DEBUG INFO...
+[cmake] DEBUG INFO...
+[cmake] DEBUG INFO...
+[cmake] DEBUG INFO...
+[cmake] DEBUG INFO...
+[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
+[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
+[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
+[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
+[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
+[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
+[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src/fig-util
+[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src/fig-util
+[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src/fig-util
+[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src/fig-util
+[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src/fig-util
+
+```
+
+## 2018-09-16
+
+- Debugging CMakeFiles.txt strange output (see 2018-09-15)
+  - When running CMake via CMakeTools in VSCode, I get the 6 repeated output lines for every operation.
+  - When running CMake via MSVS integration, I get (mostly) correct behavior.
+- Did same configuration in a nearly empty project. 
+  - At first, with CMakeLists.txt in the project root, only one line output per operation.
+  - Then, created a src subfolder and moved CMakeLists.txt and the .cpp file into it.
+  - To get CMakeTools to build, had to modify workspace settings cmake.sourceDirectory as before, AND create a "workspace" for the folder.
+  - However, when that was done, I started getting double line output (not 6 like with fig tho). Except, that seemed to happen only once; subsequent configures didn't cause it.
+- Came back to the fig project proper, after restarting VSCode. This time the duplicate output didn't happen. Restart FTW?
+- I think for now I'll forego doing this in MSVS as well as VSCode. Certain paths don't agree, and it's just confusing.
+  - Deleted the CMakeSettings.json file (from MSVS).
+  - Deleted the spurious folders that MSVS created.
+- Added back the `add_subdirectory` calls one by one, leaving the `test` one for last. All was well, until I re-added it, then infinite looping again.
+- Arg, did a "clean reconfigure" and now I'm getting dupe output again, only in threes this time. However, once again, restarting VSCode fixed it. Feh.
+- Looks like the test/CMakeLists.txt code to download the googletests stuff was using the CMAKE_BINARY_DIR, but it was taking from a project that had everything in the root dir, so when I moved it into a subdir, CMAKE_BINAR_DIR was incorrect. Elsewhere, CMake used the PROJECT_BINARY_DIR by default (relative paths, actually), and calling CMake from the generated code ended up creating the infinite loop. 
+- Fixed this by replacing CMAKE_BINARY_DIR with PROJECT_BINARY_DIR, and it works.
+- Still other config errors, but not related. WIP.

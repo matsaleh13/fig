@@ -1,0 +1,7 @@
+macro(debug_message)
+    set(DBG_LABEL "DBG (${PROJECT_NAME})")
+    message ("${DBG_LABEL} CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
+    message ("${DBG_LABEL} CMAKE_BINARY_DIR: ${CMAKE_BINARY_DIR}")
+    message ("${DBG_LABEL} PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
+    message ("${DBG_LABEL} PROJECT_BINARY_DIR: ${PROJECT_BINARY_DIR}")
+endmacro(debug_message)

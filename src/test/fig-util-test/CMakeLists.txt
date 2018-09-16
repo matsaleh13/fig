@@ -1,11 +1,9 @@
 project (fig-util-test)
 
-message ("DEBUG INFO...")
-message ("CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
-message ("PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
-message ("PROJECT_BINARY_DIR: ${PROJECT_BINARY_DIR}")
+debug_message()
 
 file(GLOB headers *.h)
 file(GLOB cppfiles *.cpp)
 
 add_executable(fig-util-test ${headers} ${cppfiles})
+target_link_libraries(fig-core fig-util)

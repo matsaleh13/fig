@@ -1,5 +1,8 @@
 cmake_minimum_required( VERSION 3.9.2 )
 
+# Macros
+include("./macros.cmake")
+
 # Version info.
 set (Fig_VERSION_MAJOR 0)
 set (Fig_VERSION_MINOR 0)
@@ -7,10 +10,7 @@ set (Fig_VERSION_PATCH 1)
 
 project (Fig VERSION ${Fig_VERSION_MAJOR}.${Fig_VERSION_MINOR}.${Fig_VERSION_PATCH} )
 
-message ("DEBUG INFO...")
-message ("CMAKE_SOURCE_DIR: ${CMAKE_SOURCE_DIR}")
-message ("PROJECT_SOURCE_DIR: ${PROJECT_SOURCE_DIR}")
-message ("PROJECT_BINARY_DIR: ${PROJECT_BINARY_DIR}")
+debug_message()
 
 # Pass CMake settings to source code.
 configure_file (
@@ -27,5 +27,5 @@ add_subdirectory(fig-util)
 add_subdirectory(fig-core)
 add_subdirectory(fig-coredyn)
 add_subdirectory(fig-cli)
-# add_subdirectory(test)
+add_subdirectory(test)
 

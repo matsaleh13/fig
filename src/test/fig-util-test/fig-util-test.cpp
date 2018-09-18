@@ -1,10 +1,16 @@
 #include "gtest/gtest.h"
 
-int add(int a, int b) {
-    return a + b;
-}
+#include "result.h"
+
    
-TEST(add_function, Two_Plus_Two_Equals_Four)
+TEST(result_class, create_result_with_int_value)
 {
-    EXPECT_EQ(add(2, 2), 4);
+  fig::util::Result<int, bool> r(1);
+  EXPECT_EQ(r.value(), 1);
+}
+
+TEST(result_class, create_result_with_bool_error)
+{
+  fig::util::Result<int, bool> r(false);
+  EXPECT_EQ(r.value(), false);
 }

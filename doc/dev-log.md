@@ -112,29 +112,7 @@
 [cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src
 [cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src
 [cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src
-[cmake] PROJECT_BINARY_DIR: E:/Dev/Fig/fig/build
-[cmake] PROJECT_BINARY_DIR: E:/Dev/Fig/fig/build
-[cmake] PROJECT_BINARY_DIR: E:/Dev/Fig/fig/build
-[cmake] PROJECT_BINARY_DIR: E:/Dev/Fig/fig/build
-[cmake] PROJECT_BINARY_DIR: E:/Dev/Fig/fig/build
-[cmake] PROJECT_BINARY_DIR: E:/Dev/Fig/fig/build
-[cmake] DEBUG INFO...
-[cmake] DEBUG INFO...
-[cmake] DEBUG INFO...
-[cmake] DEBUG INFO...
-[cmake] DEBUG INFO...
-[cmake] DEBUG INFO...
-[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
-[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
-[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
-[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
-[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
-[cmake] CMAKE_SOURCE_DIR: e:/dev/fig/fig/src
-[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src/fig-util
-[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src/fig-util
-[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src/fig-util
-[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src/fig-util
-[cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src/fig-util
+<snip>
 
 ```
 
@@ -157,3 +135,45 @@
 - Looks like the test/CMakeLists.txt code to download the googletests stuff was using the CMAKE_BINARY_DIR, but it was taking from a project that had everything in the root dir, so when I moved it into a subdir, CMAKE_BINAR_DIR was incorrect. Elsewhere, CMake used the PROJECT_BINARY_DIR by default (relative paths, actually), and calling CMake from the generated code ended up creating the infinite loop. 
 - Fixed this by replacing CMAKE_BINARY_DIR with PROJECT_BINARY_DIR, and it works.
 - Still other config errors, but not related. WIP.
+
+## 2018-09-17
+
+- Finally got GTests setup to configure with CMakeLists.txt in my project, yay.
+- Followed examples at [Setting up CMake for Google Test](https://www.testcookbook.com/book/cpp/setting-up-cmake-google-test.html) and [Unit Test with Google Test](https://www.testcookbook.com/book/cpp/unit-test-with-google-test.html).
+- Created dumb little test in fig-util-test.
+- Following advice from CMakeTools docs, [Target Debugging and Launching](https://vector-of-bool.github.io/docs/vscode-cmake-tools/debugging.html#debugging), I clicked on the little bug in the taskbar, then selected `fig-util-test` from the drop-down list at the top of VSCode. It worked:
+
+```bash
+  -------------------------------------------------------------------
+  You may only use the C/C++ Extension for Visual Studio Code with
+  Visual Studio Code, Visual Studio or Visual Studio for Mac software
+  to help you develop and test your applications.
+  -------------------------------------------------------------------
+  Loaded 'E:\Dev\Fig\fig\build\test\fig-util-test\fig-util-test.exe'. Module was built without symbols.
+  Loaded 'C:\Windows\System32\ntdll.dll'. Cannot find or open the PDB file.
+  Loaded 'C:\Windows\System32\kernel32.dll'. Cannot find or open the PDB file.
+  Loaded 'C:\Windows\System32\KernelBase.dll'. Cannot find or open the PDB file.
+  Loaded 'C:\Windows\System32\apphelp.dll'. Cannot find or open the PDB file.
+  Loaded 'C:\Windows\System32\ucrtbase.dll'. Cannot find or open the PDB file.
+  Loaded 'C:\Windows\System32\msvcp140.dll'. Cannot find or open the PDB file.
+  Loaded 'C:\Windows\System32\vcruntime140.dll'. Cannot find or open the PDB file.
+  The thread 15996 has exited with code 0 (0x0).
+  [==========] Running 1 test from 1 test case.
+  [----------] Global test environment set-up.
+  [----------] 1 test from add_function
+  [ RUN      ] add_function.Two_Plus_Two_Equals_Four
+  [       OK ] add_function.Two_Plus_Two_Equals_Four (0 ms)
+  [----------] 1 test from add_function (0 ms total)
+
+  [----------] Global test environment tear-down
+  [==========] 1 test from 1 test case ran. (1 ms total)
+  [  PASSED  ] 1 test.
+  Loaded 'C:\Windows\System32\kernel.appcore.dll'. Cannot find or open the PDB file.
+  Loaded 'C:\Windows\System32\msvcrt.dll'. Cannot find or open the PDB file.
+  Loaded 'C:\Windows\System32\rpcrt4.dll'. Cannot find or open the PDB file.
+  The thread 22640 has exited with code 0 (0x0).
+  The thread 25992 has exited with code 0 (0x0).
+  The program '[14304] fig-util-test.exe' has exited with code 0 (0x0).
+```
+
+- Building without symbols might be a problem, but I'll deal for now.

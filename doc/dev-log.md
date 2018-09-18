@@ -176,4 +176,24 @@
   The program '[14304] fig-util-test.exe' has exited with code 0 (0x0).
 ```
 
-- Building without symbols might be a problem, but I'll deal for now.
+- Installed `llvm` via chocolatey to get clang-format. Also installed the VSCode clang-format extension.
+- Started writing the fig-util Result<T,E> class, using TDD and GTest. Whee!
+- Oh no, suddenly I'm getting duplicate output again, arg. This time restarting VSCode didn't fix it.
+- Also, got this error:
+
+  `CMake Error: CMake can not determine linker language for target: fig-util`
+
+- According to [StackOverflow](https://stackoverflow.com/questions/11801186/cmake-unable-to-determine-linker-language-with-c), this was because all I have in that library is a header file, no .cpp.
+- The fix is to use the `set_target_properties` command to explicitly set the language:
+
+    `set_target_properties(hello PROPERTIES LINKER_LANGUAGE CXX)`
+
+- Making more progress, until I hit another error, this time linker:
+
+```bash
+[build] LINK : fatal error LNK1181: cannot open input file 'fig-util\fig-util.lib'
+[build] ninja: build stopped: subcommand failed.
+[build] Build finished with exit code 1
+```
+
+  - This one is for another day.

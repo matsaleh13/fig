@@ -19,6 +19,7 @@
   - [Chromium A style complying with Chromium’s style guide](http://www.chromium.org/developers/coding-style)
   - [Mozilla A style complying with Mozilla’s style guide](https://developer.mozilla.org/en-US/docs/Developer_Guide/Coding_Style)
 - If absolutely necessary, modify the existing standard using the most specific changes possible.
+- See also [Clang-Format Style Options](https://clang.llvm.org/docs/ClangFormatStyleOptions.html).
 
 ## C++ Standard Version
 
@@ -135,3 +136,4 @@
 - [Exceptions vs expected: Let's find a compromise](https://foonathan.net/blog/2017/12/04/exceptions-vs-expected.html) for more information.
 - [Outcome 2.0 Library](https://ned14.github.io/outcome/)
 - [Handling STL errors without exceptions](https://code-examples.net/en/q/3b0ee3)
+- [Error Handling in C++ or: Why You Should Use Eithers in Favor of Exceptions and Error-codes](https://hackernoon.com/error-handling-in-c-or-why-you-should-use-eithers-in-favor-of-exceptions-and-error-codes-f0640912eb45)

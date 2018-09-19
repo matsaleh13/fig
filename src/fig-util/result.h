@@ -6,42 +6,49 @@ namespace util {
 template <typename T, typename E>
 class Result {
 public:
-  Result(const T& value);
-  Result(const E& error);
-  explicit operator bool() const;
+  explicit Result(const T& value);
+  explicit Result(const E& error);
+  constexpr explicit operator bool() const;
 
-  const T& value() const;
-  const E& error() const;
+  constexpr const T& value() const;
+  constexpr const E& error() const;
 
 private:
   union {
-    T m_value;
-    E m_error;
-  } m_data;
+    const T m_value;
+    const E m_error;
+  };
 
-  bool m_isError = false;
+  const bool m_isError;
+  mutable bool m_checked = false;
 };
 
 template <typename T, typename E>
-Result<T, E>::Result(const T& value) : m_data{value}, m_isError(false) {}
+Result<T, E>::Result(const T& value)
+    : m_value(value), m_isError(false), m_checked(false) {}
 
 template <typename T, typename E>
-Result<T, E>::Result(const E& error) : m_data{error}, m_isError(true) {}
+Result<T, E>::Result(const E& error)
+    : m_error(error), m_isError(true), m_checked(false) {}
 
 template <typename T, typename E>
-inline Result<T,E>::operator bool() const
-{
+inline constexpr Result<T, E>::operator bool() const {
+  m_checked = true;
   return (m_isError == false);
 }
 
 template <typename T, typename E>
-inline const T& Result<T, E>::value() const {
-  return m_data.m_value;
+inline constexpr const T& Result<T, E>::value() const {
+  assert(m_checked);
+  assert(!m_isError);
+  return m_value;
 }
 
 template <typename T, typename E>
-inline const E& Result<T, E>::error() const {
-  return m_data.m_error;
+inline constexpr const E& Result<T, E>::error() const {
+  assert(m_checked);
+  assert(m_isError);
+  return m_error;
 }
 
 } // namespace util

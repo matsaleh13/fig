@@ -93,7 +93,7 @@
   - Temporarily disabled by commenting out the `add_subdirectory(test)` command in the root CML.txt file.
 - Also getting repeated debug output for some reason:
 
-```
+```cmake
 [cmake] DEBUG INFO FOR Fig...
 [cmake] DEBUG INFO FOR Fig...
 [cmake] DEBUG INFO FOR Fig...
@@ -113,7 +113,6 @@
 [cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src
 [cmake] PROJECT_SOURCE_DIR: E:/Dev/Fig/fig/src
 <snip>
-
 ```
 
 ## 2018-09-16
@@ -143,7 +142,7 @@
 - Created dumb little test in fig-util-test.
 - Following advice from CMakeTools docs, [Target Debugging and Launching](https://vector-of-bool.github.io/docs/vscode-cmake-tools/debugging.html#debugging), I clicked on the little bug in the taskbar, then selected `fig-util-test` from the drop-down list at the top of VSCode. It worked:
 
-```bash
+```cmake
   -------------------------------------------------------------------
   You may only use the C/C++ Extension for Visual Studio Code with
   Visual Studio Code, Visual Studio or Visual Studio for Mac software
@@ -196,4 +195,57 @@
 [build] Build finished with exit code 1
 ```
 
-  - This one is for another day.
+- This one is for another day.
+
+## 2018-09-18
+
+- Yesterday's linker error was caused by the fact that the `fig-util` "library" has only one file, a .h file. Doh, it can't be linked because it produces no output at build time.
+  - Solution was to treat it as a "header-only" library, and configure it using CMake's `INTERFACE` library option:
+
+  ```cmake
+    add_library(fig-util INTERFACE)
+  ```
+
+- In other news, I've been confused by VSCode output shown below when running my tests:
+
+```vscode
+  [build] Starting build
+  [proc] Executing command: "C:\Program Files\CMake\bin\cmake.EXE" --build e:/dev/fig/fig/build --config Release --target fig-util-test -- -j 10
+  [build] ninja: no work to do.
+  [build] Build finished with exit code 0
+```
+
+- Turns out this was happening because a test was failing, but VSCode didn't bring the debug console tab into focus.
+  - When I manually switched to that tab, I saw:
+
+  ```vscode
+    [==========] Running 2 tests from 1 test case.
+    [----------] Global test environment set-up.
+    [----------] 2 tests from result_class
+    [ RUN      ] result_class.create_result_with_int_value
+    [       OK ] result_class.create_result_with_int_value (0 ms)
+    [ RUN      ] result_class.create_result_with_bool_error
+    E:\Dev\Fig\fig\src\test\fig-util-test\fig-util-test.cpp(15): error: Expected equality of these values:
+      r.value()
+    E:\Dev\Fig\fig\src\test\fig-util-test\fig-util-test.cpp(15): error: Expected equality of these values:
+      r.value()
+        Which is: -2
+      false    Which is: -2
+      false
+    [  FAILED  ] result_class.create_result_with_bool_error (1 ms)
+    [----------] 2 tests from result_class (1 ms total)
+
+    [----------] Global test environment tear-down
+    [==========] 2 tests from 1 test case ran. (1 ms total)
+    [  PASSED  ] 1 test.
+    [  FAILED  ] 1 test, listed below:
+    [  FAILED  ] result_class.create_result_with_bool_error
+
+    1 FAILED TEST
+  ```
+
+  - So, yay! Tests FTW!
+- Decided I needed more CMake debug output so refactored my `debug_message()` one into `debug_boilerplate()`, and created a new `debug_message` that takes an argument and prepends the debug info to it. Now `debug_boilerplate()` calls that. Better.
+- Fleshed out the Result<T, E> implementation some more, with more TDD.
+- Added -Wall compiler flag to the project, downgrading to -W3 only for GTests proper, and re-enabled -Wall for specific tests.
+- Starting to think about how to implement support for building with both exceptions and without.

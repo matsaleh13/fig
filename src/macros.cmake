@@ -10,3 +10,33 @@ macro(debug_message msg)
     set(DBG_LABEL "DBG (${PROJECT_NAME})")
     message ("${DBG_LABEL}: ${msg}")
 endmacro(debug_message)
+
+macro(warnings_strict)
+    if (MSVC)
+        # warning level 4 and all warnings as errors
+        add_compile_options(/W4 /WX)
+    else()
+        # lots of warnings and all warnings as errors
+        add_compile_options(-Wall -Wextra -pedantic -Werror)
+    endif()
+endmacro(warnings_strict)
+
+macro(warnings_moderate)
+    if (MSVC)
+        # warning level 3 and all warnings as errors
+        add_compile_options(/W3 /WX)
+    else()
+        # major warnings and all warnings as errors
+        add_compile_options(-W3 -Werror)
+    endif()
+endmacro(warnings_moderate)
+
+macro(warnings_relaxed)
+    if (MSVC)
+        # warning level 3 and no warnings as errors
+        add_compile_options(/W3)
+    else()
+        # major warnings and no warnings as errors
+        add_compile_options(-W3)
+    endif()
+endmacro(warnings_relaxed)

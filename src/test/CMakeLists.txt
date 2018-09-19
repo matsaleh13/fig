@@ -5,7 +5,8 @@ debug_boilerplate()
 
 # These steps from: https://www.testcookbook.com/book/cpp/setting-up-cmake-google-test.html
 
-set(CMAKE_CXX_STANDARD 11)
+# set(CMAKE_CXX_STANDARD 11)
+warnings_moderate()
 
 # Download and unpack googletest at configure time
 configure_file(

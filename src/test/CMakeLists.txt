@@ -1,7 +1,7 @@
 cmake_minimum_required( VERSION 3.9.2 )
 project(test)
 
-debug_message()
+debug_boilerplate()
 
 # These steps from: https://www.testcookbook.com/book/cpp/setting-up-cmake-google-test.html
 

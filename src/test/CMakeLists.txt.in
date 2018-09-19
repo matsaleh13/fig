@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.2)
 project(googletest-download NONE)
 
 include("${CMAKE_SOURCE_DIR}/macros.cmake")
-debug_message()
+debug_boilerplate()
 
 include(ExternalProject)
 ExternalProject_Add(googletest

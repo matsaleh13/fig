@@ -10,7 +10,7 @@ set (Fig_VERSION_PATCH 1)
 
 project (Fig VERSION ${Fig_VERSION_MAJOR}.${Fig_VERSION_MINOR}.${Fig_VERSION_PATCH} )
 
-debug_message()
+debug_boilerplate()
 
 # Pass CMake settings to source code.
 configure_file (

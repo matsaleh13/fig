@@ -1,7 +1,7 @@
 project (fig-util-test)
 
-debug_message()
-message("fig_util_include: ${fig_util_include}")
+debug_boilerplate()
+debug_message("fig_util_include: ${fig_util_include}")
 
 file(GLOB headers *.h)
 file(GLOB cppfiles *.cpp)

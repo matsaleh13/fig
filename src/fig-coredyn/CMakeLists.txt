@@ -1,6 +1,6 @@
 project (fig-coredyn)
 
-debug_message()
+debug_boilerplate()
 
 file(GLOB headers *.h)
 file(GLOB cppfiles *.cpp)

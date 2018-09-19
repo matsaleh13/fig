@@ -1,6 +1,6 @@
 project (fig-util)
 
-debug_message()
+debug_boilerplate()
 
 file(GLOB headers ${PROJECT_SOURCE_DIR}/*.h)
 file(GLOB cppfiles ${PROJECT_SOURCE_DIR}/*.cpp)

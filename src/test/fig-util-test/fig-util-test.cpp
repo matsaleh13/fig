@@ -12,5 +12,5 @@ TEST(result_class, create_result_with_int_value)
 TEST(result_class, create_result_with_bool_error)
 {
   fig::util::Result<int, bool> r(false);
-  EXPECT_EQ(r.value(), false);
+  EXPECT_EQ(r.error(), false);
 }

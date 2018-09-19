@@ -10,6 +10,10 @@ set (Fig_VERSION_PATCH 1)
 
 project (Fig VERSION ${Fig_VERSION_MAJOR}.${Fig_VERSION_MINOR}.${Fig_VERSION_PATCH} )
 
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 debug_boilerplate()
 
 # Pass CMake settings to source code.

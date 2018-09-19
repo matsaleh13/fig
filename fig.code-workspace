@@ -6,7 +6,11 @@
 	],
 	"settings": {
 		"files.associations": {
-			"xlocale": "cpp"
+			"xlocale": "cpp",
+			"functional": "cpp",
+			"system_error": "cpp",
+			"xlocmon": "cpp",
+			"xtr1common": "cpp"
 		}
 	}
 }

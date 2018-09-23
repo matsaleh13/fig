@@ -249,3 +249,22 @@
 - Fleshed out the Result<T, E> implementation some more, with more TDD.
 - Added -Wall compiler flag to the project, downgrading to -W3 only for GTests proper, and re-enabled -Wall for specific tests.
 - Starting to think about how to implement support for building with both exceptions and without.
+
+## 2018-09-22
+
+- Implemented ResultError exception for handling unchecked results.
+- Added tests for unchecked results.
+- TODO: need an alternative for exception-free code.
+- Created Error class for encapsulating rich error information for later reporting. Intended to be the default E template argument for Result<T, E>.
+- Created string formatting helper functions.
+
+## 2018-09-23
+
+- Implemented two versions of string formatter helper functions:
+  - One takes a std::string& and returns a std::string. This one uses a stack buffer if small, otherwise allocates one internally.
+  - The other takes a const char array and returns a std::string. This one uses a stack buffer only.
+  - Both use a MIN_BUF_SIZE constant to set the min stack buffer size, but may use a larger one if needed.
+- Implemented tests for both functions:
+  - Testing smaller format string.s
+  - Special test fixture to test larger strings (exceeding MIN_BUF_SIZE).
+- Having trouble testing with the large strings, because I can't see whether they're initialized right, and I can't get the debugger running in VScode atm.

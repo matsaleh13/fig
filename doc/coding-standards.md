@@ -23,7 +23,7 @@
 
 ## C++ Standard Version
 
-- All Fig code should target C++ 14.
+- All Fig code should target C++ 11 in order to reach the most users. TODO: validate.
 
 ## Documentation
 

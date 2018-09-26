@@ -50,19 +50,22 @@ TEST(string_helpers, format_numbers_using_std_string_cstr) {
 class StringHelpersLargeBufferFixture : public ::testing::Test {
 protected:
   StringHelpersLargeBufferFixture() {
-    // Pad with some character to fill the buffer.
-    memset(m_large_format_string, 'X', BUF_SIZE);
-    memset(m_large_result_string, 'X', BUF_SIZE);
+    // Fill with some characters to pad the buffer.
+    memset(m_large_format_string, 'X', BUF_SIZE-1);   // all but last
+    m_large_format_string[BUF_SIZE-1] = '\0'; // term null
+    memset(m_large_result_string, 'X', BUF_SIZE-1);   // all but last
+    m_large_result_string[BUF_SIZE-1] = '\0'; // term null
   }
 
   template <size_t N>
-  void init_format(const char (&format)[N]) {
-    memcpy(m_large_format_string, format, N);
+  void init_format(const char (&format)[N], size_t delta) {
+    memcpy(m_large_format_string, format, N - 1);  // Omit terminating null.
+    m_large_format_string[BUF_SIZE-delta] = '\0';  // account for the number of chars that will be added to the string.
   }
 
   template <size_t N>
-  void init_result(const char (&result)[N]) {
-    memcpy(m_large_result_string, result, N);
+  void init_result(const char (&result)[N]) { 
+    memcpy(m_large_result_string, result, N - 1);  // Omit terminating null.
   }
 
   const static size_t BUF_SIZE = fig::util::MIN_BUF_SIZE * 2;
@@ -70,124 +73,127 @@ protected:
   char m_large_result_string[BUF_SIZE];
 };
 
+// Differences in lengths of format strings vs. formatted strings.
+// NOTE: totally depends on test data values.
+size_t HELLO_WORLD_DELTA = 10;
+size_t FORTY_TWO_DELTA = 6;
+
 TEST_F(StringHelpersLargeBufferFixture, format_string_using_const_char_buf) {
-  init_format("Formatting string: [%s]");
+  init_format("Formatting string: [%s]", HELLO_WORLD_DELTA);
   init_result("Formatting string: [hello world]");
 
   auto msg = fig::util::string_format(m_large_format_string, "hello world");
 
-  std::cerr << m_large_result_string << std::endl;
-
-  ASSERT_EQ(msg, std::string(m_large_result_string));
+  ASSERT_EQ(msg, std::string(m_large_result_string));  // std::string to avoid pointer compare.
 }
 
 TEST_F(StringHelpersLargeBufferFixture, format_numbers_using_const_char_buf) {
-  init_format("Formatting numbers: [%d] [%0.3f] [%08x]");
+  init_format("Formatting numbers: [%d] [%0.3f] [%08x]", FORTY_TWO_DELTA);
   init_result("Formatting numbers: [42] [42.420] [00000042]");
 
-  auto msg = fig::util::string_format(m_large_format_string, 42, 42.42, 0x42);
+  auto msg = fig::util::string_format(m_large_format_string, 42, 42.42, 0x42); 
 
-  ASSERT_EQ(msg, std::string(m_large_result_string));
+  ASSERT_EQ(msg, std::string(m_large_result_string)); // std::string to avoid pointer compare.
 }
 
 TEST_F(StringHelpersLargeBufferFixture, format_string_using_std_string) {
-  init_format("Formatting string: [%s]");
+  init_format("Formatting string: [%s]", HELLO_WORLD_DELTA);
   init_result("Formatting string: [hello world]");
 
   auto msg = fig::util::string_format(std::string(m_large_format_string),
                                       "hello world");
 
-  ASSERT_EQ(msg, std::string(m_large_result_string));
+  ASSERT_EQ(msg, std::string(m_large_result_string)); // std::string to avoid pointer compare.
 }
 
 TEST_F(StringHelpersLargeBufferFixture, format_numbers_using_std_string) {
-  init_format("Formatting numbers: [%d] [%0.3f] [%08x]");
+  init_format("Formatting numbers: [%d] [%0.3f] [%08x]", FORTY_TWO_DELTA);
   init_result("Formatting numbers: [42] [42.420] [00000042]");
 
   auto msg = fig::util::string_format(
       std::string(m_large_format_string), 42, 42.42, 0x42);
 
-  ASSERT_EQ(msg, std::string(m_large_result_string));
+  ASSERT_EQ(msg, std::string(m_large_result_string)); // std::string to avoid pointer compare.
 }
 
 TEST_F(StringHelpersLargeBufferFixture, format_string_using_std_string_cstr) {
-  init_format("Formatting string: [%s]");
+  init_format("Formatting string: [%s]", HELLO_WORLD_DELTA);
   init_result("Formatting string: [hello world]");
 
   auto msg = fig::util::string_format(
       std::string(m_large_format_string).c_str(), "hello world");
 
-  ASSERT_EQ(msg, std::string(m_large_result_string));
+  ASSERT_EQ(msg, std::string(m_large_result_string)); // std::string to avoid pointer compare.
 }
 
 TEST_F(StringHelpersLargeBufferFixture, format_numbers_using_std_string_cstr) {
-  init_format("Formatting numbers: [%d] [%0.3f] [%08x]");
+  init_format("Formatting numbers: [%d] [%0.3f] [%08x]", FORTY_TWO_DELTA);
   init_result("Formatting numbers: [42] [42.420] [00000042]");
 
   auto msg = fig::util::string_format(
       std::string(m_large_format_string).c_str(), 42, 42.42,
       0x42);
 
-  ASSERT_EQ(msg, std::string(m_large_result_string));
+  ASSERT_EQ(msg, std::string(m_large_result_string)); // std::string to avoid pointer compare.
 }
 
 // Negative path tests
 TEST_F(StringHelpersLargeBufferFixture, format_string_using_const_char_buf_neg) {
-  init_format("Formatting string: [%s]");
+  init_format("Formatting string: [%s]", HELLO_WORLD_DELTA);
   init_result("Formatting string: [hello world]");
 
   auto msg = fig::util::string_format(m_large_format_string, "hello world");
 
-  ASSERT_TRUE(msg != std::string("Formatting string: [hello world]"));
-  // ASSERT_NE(msg, std::string("Formatting string: [hello world]"));
+  // ASSERT_TRUE(msg != std::string("Formatting string: [hello world]"));
+  ASSERT_NE(msg, std::string("Formatting string: [hello world]")); // std::string to avoid pointer compare.
 }
 
 TEST_F(StringHelpersLargeBufferFixture, format_numbers_using_const_char_buf_neg) {
-  init_format("Formatting numbers: [%d] [%0.3f] [%08x]");
-  init_result("Formatting numbers: [42] [42.420] [00000042]");
+  init_format("Formatting numbers: [%d] [%0.3f] [%08x]", FORTY_TWO_DELTA);
+  init_result("Formatting numbers: [42] [42.420] [00000042]"); 
 
   auto msg = fig::util::string_format(m_large_format_string, 42, 42.42, 0x42);
 
-  ASSERT_NE(msg, std::string("Formatting numbers: [42] [42.420] [00000042]"));
+  ASSERT_NE(msg, std::string("Formatting numbers: [42] [42.420] [00000042]")); // std::string to avoid pointer compare.
 }
 
 TEST_F(StringHelpersLargeBufferFixture, format_string_using_std_string_neg) {
-  init_format("Formatting string: [%s]");
+  init_format("Formatting string: [%s]", HELLO_WORLD_DELTA);
   init_result("Formatting string: [hello world]");
 
   auto msg = fig::util::string_format(std::string(m_large_format_string),
                                       "hello world");
 
-  ASSERT_NE(msg, std::string("Formatting string: [hello world]"));
+  ASSERT_NE(msg, std::string("Formatting string: [hello world]")); // std::string to avoid pointer compare.;
 }
 
 TEST_F(StringHelpersLargeBufferFixture, format_numbers_using_std_string_neg) {
-  init_format("Formatting numbers: [%d] [%0.3f] [%08x]");
+  init_format("Formatting numbers: [%d] [%0.3f] [%08x]", FORTY_TWO_DELTA);
   init_result("Formatting numbers: [42] [42.420] [00000042]");
 
   auto msg = fig::util::string_format(
       std::string(m_large_format_string), 42, 42.42, 0x42);
 
-  ASSERT_NE(msg, std::string("Formatting numbers: [42] [42.420] [00000042]"));
+  ASSERT_NE(msg, std::string("Formatting numbers: [42] [42.420] [00000042]")); // std::string to avoid pointer compare.
 }
 
 TEST_F(StringHelpersLargeBufferFixture, format_string_using_std_string_cstr_neg) {
-  init_format("Formatting string: [%s]");
+  init_format("Formatting string: [%s]", HELLO_WORLD_DELTA);
   init_result("Formatting string: [hello world]");
 
   auto msg = fig::util::string_format(
       std::string(m_large_format_string).c_str(), "hello world");
 
-  ASSERT_NE(msg, std::string("Formatting string: [hello world]"));
+  ASSERT_NE(msg, std::string("Formatting string: [hello world]")); // std::string to avoid pointer compare.
 }
 
 TEST_F(StringHelpersLargeBufferFixture, format_numbers_using_std_string_cstr_neg) {
-  init_format("Formatting numbers: [%d] [%0.3f] [%08x]");
+  init_format("Formatting numbers: [%d] [%0.3f] [%08x]", FORTY_TWO_DELTA);
   init_result("Formatting numbers: [42] [42.420] [00000042]");
 
   auto msg = fig::util::string_format(
       std::string(m_large_format_string).c_str(), 42, 42.42,
       0x42);
 
-  ASSERT_NE(msg, std::string("Formatting numbers: [42] [42.420] [00000042]"));
+  ASSERT_NE(msg, std::string("Formatting numbers: [42] [42.420] [00000042]")); // std::string to avoid pointer compare.
 }

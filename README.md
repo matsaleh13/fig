@@ -5,11 +5,13 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
 ## Project Goals
 
  1. Create the config system I would like to use.
- 1. Learn to code modern C++.
- 1. Use to develop a portfolio of my current work.
- 1. Learn cross-platform dev in C++.
- 1. Learn plugin dev in C++.
- 1. Learn component-based dev in C++.
+ 1. Develop a professional quality, open-source library in C++, suitable for use in modern C++ games, embedded systems, and other applications.
+ 1. During this process, I expect to:
+    - Learn to code modern C++.
+    - Learn cross-platform dev in C++.
+    - Learn plugin dev in C++.
+    - Learn component-based dev in C++.
+    - Learn library dev in C++.
 
 ## Features
 
@@ -69,10 +71,9 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
  1. Develop on Windows and Linux in parallel (i.e. containers/WSL)
  1. TDD.
  1. Git, but not GitHub (private repo to start).
- 1. Build with clang on all platforms.
- 1. Use 3rd party libs for basic functionality.
- 1. See Boost project for structure ideas.
- 1. Avoid exceptions to support use in games and embedded applications that don't use them.
+ 1. Builds on all platforms.
+ 1. Use 3rd party libs as needed for basic functionality.
+ 1. Support use by exception-free applications to facilitate use in games and embedded applications that don't use them.
 
 ## 3rd Party Libs to consider
 

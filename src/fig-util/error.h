@@ -25,11 +25,10 @@ private:
   const uint32_t m_line;
 };
 
+constexpr Error::Error(const std::string& what, const std::string& file,
+                       uint32_t line)
+    : m_what(what), m_file(file), m_line(line) {}
+
+
 } // namespace util
 } // namespace fig
-
-
-#define FIG_ERROR(msg) \
-{ \
-  fig::util::Error(msg, __FILE__, __LINE__); \
-};

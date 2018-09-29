@@ -114,3 +114,15 @@ Abstraction for returning a result value or error value from a function. Example
         cout << f.error();
 
 See: [Exceptions vs expected: Let's find a compromise](https://foonathan.net/blog/2017/12/04/exceptions-vs-expected.html) for more information.
+
+### Error
+
+Encapsulates actionable error details at the error site for later access. Motivation for this is to provide exception-like detail when exceptions can't be used.
+
+#### Error Methods
+
+- `Error::Error(const std::string& what, const std::string& file, uint32_t line)` Ctor; captures details about the error at the error site.
+- `const std::string& what() const` Returns the text of the error details.
+- `const std::string& file() const` Returns the file of the error site.
+- `uint32_t line() const` Returns the line of the error site.
+- TODO: stack info?

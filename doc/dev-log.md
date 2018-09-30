@@ -268,3 +268,53 @@
   - Testing smaller format string.s
   - Special test fixture to test larger strings (exceeding MIN_BUF_SIZE).
 - Having trouble testing with the large strings, because I can't see whether they're initialized right, and I can't get the debugger running in VScode atm.
+
+## 2018-09-24
+
+- I think I figured out the problem with the string_helpers tests:
+  - My test large strings, used in the `StringHelpersLargeBufferFixture` class, contained a `\0` from where I failed to exclude it from the `memcpy` call I used to initialize the buffers.
+
+## 2018-09-25
+
+- String formatting tests now failing with large buffer, but for a different reason:
+  - The generated formatted string gets larger as characters are inserted. 
+  - But, the test string (intended to represent the final formatted value), doesn't, since I memcpy'ed the literal string into the (X-padded) buffer without increasing the size.
+  - The size difference is equivalent to the number of chars inserted into the formatting tokens minus the number of characters that make up the formatting tokens.
+  - Bottom line, the code is working perfectly, but I haven't designed the test correctly to verify it. Doh :|
+- Fixed this by adding a param to the init_format() setup function, to pass a size_t equal to the delta between the format string and the expected size of the formatted string, in order to account for the growth of the test string.
+
+## 2018-09-29
+
+- Got macros to compile, finally:
+  - Changed from this:
+
+  ```c++
+  #define FORMAT_STRING(msg, ...) \
+    (fig::util::string_format(msg, __VA_OPT__(,) __VA_ARGS__));
+
+  ```
+
+  - to this:
+
+  ```c++
+  #define FORMAT_STRING(msg, ...) \
+    (fig::util::string_format(msg, __VA_ARGS__))
+
+  ```
+
+  - Not sure why that fixed it though. I think C++ 11 supports `__VA_OPT__`. I'll probably find out soon enough ;).
+- Started implementing the FigKey class:
+  - At first thought I wanted to make it an abstract interface for extensibility. But IMO that's not really necessary, and adds vtable overhead to something that should be as lightweight as possible.
+  - I did make it a template, taking a TString argument. This allows use of either std::string or std::wstring, since IMO that is still an open question, at least on Windows.
+  - Also made a `std::hash<FigKey<TString>>` specialization.
+  - Researched key requirements here: [C++ unordered_map using a custom class type as the key](https://stackoverflow.com/questions/17016175/c-unordered-map-using-a-custom-class-type-as-the-key)
+  - Also need to make it usable in `std::map` as well (TODO).
+  - Also want to give it URI semantics.
+- Looking into integrating [Poco](https://github.com/pocoproject) library (for URI).
+- This forced me to start thinking about C++ package manager(s) to use:
+  - [Conan](https://conan.io/)
+  - [Vcpkg](https://github.com/microsoft/vcpkg)
+  - Neither is available via Chocolatey.
+  - Is this too much? Should I just use git?
+  - To be continued.
+- Decided I don't need to deal with this for now. I'll just flesh out the interface of the FigKey and implement key use cases for now. I'll add in the URI semantics when it's needed. Heh... or if.

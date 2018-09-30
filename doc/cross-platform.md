@@ -24,7 +24,6 @@
 - [Writing a Cross-Platform Dynamic Library](https://atomheartother.github.io/c++/2018/07/12/CPPDynLib.html)
 - [C++ - Unicode Encoding Conversions with STL Strings and Win32 APIs](https://msdn.microsoft.com/en-us/magazine/mt763237.aspx?f=255&MSPPError=-2147217396)
 
-
 ## Cross-Platform Guiding Principles
 
 - Simultaneously Develop for Different Platforms
@@ -45,6 +44,8 @@
 - Avoid 3rd party "application frameworks":
   - e.g. Qt
   - If necessary use Boost only.
+- Use system locale by default, except for locale-independent operations/data (if applicable).
+  - Override via reserved keyword config property: `FigLocale`.
 
 ## Project Considerations
 

@@ -87,6 +87,7 @@ A Generalized and Extensible Configuration Library writtten in Modern C++
  1. Templating - [mstch (mustache)](https://mustache.github.io/)
  1. Unicode strings - [ICU - International Components for Unicode](http://site.icu-project.org/)
  1. Error Handling - [Outcome 2.0 Library](https://ned14.github.io/outcome/)
+ 1. Standards Compliance - [Guideline Support Library (GSL)](https://github.com/Microsoft/GSL)
 
 ## Project Structure
 

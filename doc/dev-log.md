@@ -327,5 +327,35 @@
   - Unfortunately, because `fig::util::tolower` doesn't return, I must call it in the ctor body.
 - Trying to write [GTest Typed tests](https://github.com/google/googletest/blob/master/googletest/docs/advanced.md#typed-tests) for FigKey that handle multiple type parameters for the string type:
   - Unfortunately, I'm using string literals for test data, and with std::basic_string types, I can't think of a way to generically use the right literal type (e.g. "foo" vs L"foo"), based on my FigKey type param.
-  
-  
+  - Finally figured it out, using template specialization, w00t. I simply created two methods of the templatatized fixture class to return the strings I wanted, with the return type specified by the template:
+
+  ```C++
+  template<TChar>
+  class Fixture // gtest blah
+  {
+    const TChar* input_name();
+    const TChar* test_name();
+  }
+  ```
+
+  Then I specialzed each of them for `char` and `wchar_t` types:
+
+  ```C++
+
+  template<>
+  const char* Fixture<char>::input_name() { return "foo"; }
+
+  template<>
+  const wchar_t* Fixture<wchar_t>::input_name() { return L"foo"; }
+
+  ```
+
+  After that, the types were driven by these GTest lines:
+
+  ```C++
+  using MyTypes = ::testing::Types<char, wchar_t>;
+  TYPED_TEST_CASE(FigKeyTypedFixture, MyTypes);
+
+  ```
+
+  Pretty cool!

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <cctype>
 
 namespace fig {
 namespace util {
@@ -59,6 +60,27 @@ constexpr static std::string string_format(const char (&format)[N],
   std::snprintf(buf, actual_size, format, args...);
   return {buf, buf + actual_size - 1};
 }
+
+/**
+ * @brief Convert all characters of string s to lower case.
+ *
+ * TODO: Configurable locale support.
+ *
+ * @tparam TChar Type of character to use.
+ * @param s String to be converted (IN/OUT)
+ */
+template <typename TChar>
+constexpr static void tolower(std::basic_string<TChar>& s) {
+  std::transform(s.begin(), s.end(), s.begin(), std::tolower );
+}
+
+template <typename TChar>
+constexpr static const std::basic_string<TChar> tolower_copy(const std::basic_string<TChar>& s) {
+  std::basic_string<TChar> temp(s); 
+  std::transform(temp.begin(), temp.end(), temp.begin(), std::tolower );
+  return temp;
+}
+
 
 } // namespace util
 } // namespace fig

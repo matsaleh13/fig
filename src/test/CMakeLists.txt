@@ -47,4 +47,5 @@ endif()
 
 enable_testing()
 add_subdirectory(fig-util-test)
+add_subdirectory(fig-core-test)
 

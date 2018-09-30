@@ -197,3 +197,44 @@ TEST_F(StringHelpersLargeBufferFixture, format_numbers_using_std_string_cstr_neg
 
   ASSERT_NE(msg, std::string("Formatting numbers: [42] [42.420] [00000042]")); // std::string to avoid pointer compare.
 }
+
+//
+// fig::util::tolower
+//
+TEST(string_helpers, tolower_using_std_string) {
+  auto input = "HELLO WORLD";
+  auto expected = "hello world";
+
+  auto convert = std::string(input);
+  fig::util::tolower(convert);
+
+  ASSERT_EQ(convert, std::string(expected));
+}
+
+TEST(string_helpers, tolower_using_std_wstring) {
+  auto input = L"HELLO WORLD";
+  auto expected = L"hello world";
+
+  auto convert = std::wstring(input);
+  fig::util::tolower(convert);
+
+  ASSERT_EQ(convert, std::wstring(expected));
+}
+
+TEST(string_helpers, tolower_copy_using_std_string) {
+  auto input = "HELLO WORLD";
+  auto expected = "hello world";
+
+  auto converted = fig::util::tolower_copy(std::string(input));
+
+  ASSERT_EQ(converted, std::string(expected));
+}
+
+TEST(string_helpers, tolower_copy_using_std_wstring) {
+  auto input = L"HELLO WORLD";
+  auto expected = L"hello world";
+
+  auto converted = fig::util::tolower_copy(std::wstring(input));
+
+  ASSERT_EQ(converted, std::wstring(expected));
+}

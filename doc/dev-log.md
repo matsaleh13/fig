@@ -318,3 +318,14 @@
   - Is this too much? Should I just use git?
   - To be continued.
 - Decided I don't need to deal with this for now. I'll just flesh out the interface of the FigKey and implement key use cases for now. I'll add in the URI semantics when it's needed. Heh... or if.
+
+## 2018-09-30
+
+- Implemented `fig::util::tolower` helper to convert a `basic_string<T>`:
+  - Unfortunately, it can't return; it must modify an in/out param to minimize copies.
+- Used `fig::util::tolower` to init the FigKey::m_name.
+  - Unfortunately, because `fig::util::tolower` doesn't return, I must call it in the ctor body.
+- Trying to write [GTest Typed tests](https://github.com/google/googletest/blob/master/googletest/docs/advanced.md#typed-tests) for FigKey that handle multiple type parameters for the string type:
+  - Unfortunately, I'm using string literals for test data, and with std::basic_string types, I can't think of a way to generically use the right literal type (e.g. "foo" vs L"foo"), based on my FigKey type param.
+  
+  

@@ -359,3 +359,11 @@
   ```
 
   Pretty cool!
+
+## 2018-10-11
+
+- Recently learned about move semantics. So much new stuff since C++98! :P Maybe my problem requiring tolower() to take an in/out param is now a non-issue.
+  - [How to use move semantics with std::string during function return?](https://stackoverflow.com/questions/12011426/how-to-use-move-semantics-with-stdstring-during-function-return)
+  - Even better [C++11 rvalues and move semantics confusion (return statement)](https://stackoverflow.com/questions/4986673/c11-rvalues-and-move-semantics-confusion-return-statement)
+  - So, as long as std::basic_string has a move constructor/assignment, we should be good. It's actually automatic, and I don't need to jump through hoops. RVO (return value optimization)  means that if a function returns a non-reference type, it does not incur either copy or move overhead (as an optimization, if possible). If not possible, then if the return type has move semantics, the compiler will invoke that. Only when both RVO fails and there is no move support will the compiler invoke the copy operation. It almost sounds too good to be true.
+  

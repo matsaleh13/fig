@@ -211,6 +211,15 @@ TEST(string_helpers, tolower_using_std_string) {
   ASSERT_EQ(convert, std::string(expected));
 }
 
+TEST(string_helpers, tolower_return_using_std_string) {
+  auto input = "HELLO WORLD";
+  auto expected = "hello world";
+
+  auto convert = fig::util::tolower(std::string(input));;
+
+  ASSERT_EQ(convert, std::string(expected));
+}
+
 TEST(string_helpers, tolower_using_std_wstring) {
   auto input = L"HELLO WORLD";
   auto expected = L"hello world";
@@ -221,20 +230,11 @@ TEST(string_helpers, tolower_using_std_wstring) {
   ASSERT_EQ(convert, std::wstring(expected));
 }
 
-TEST(string_helpers, tolower_copy_using_std_string) {
-  auto input = "HELLO WORLD";
-  auto expected = "hello world";
-
-  auto converted = fig::util::tolower_copy(std::string(input));
-
-  ASSERT_EQ(converted, std::string(expected));
-}
-
-TEST(string_helpers, tolower_copy_using_std_wstring) {
+TEST(string_helpers, tolower_return_using_std_wstring) {
   auto input = L"HELLO WORLD";
   auto expected = L"hello world";
 
-  auto converted = fig::util::tolower_copy(std::wstring(input));
+  auto convert = fig::util::tolower(std::wstring(input));;
 
-  ASSERT_EQ(converted, std::wstring(expected));
+  ASSERT_EQ(convert, std::wstring(expected));
 }

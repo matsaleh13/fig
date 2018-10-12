@@ -74,9 +74,18 @@ constexpr static void tolower(std::basic_string<TChar>& s) {
   std::transform(s.begin(), s.end(), s.begin(), std::tolower );
 }
 
+/**
+ * @brief Convert all characters of string s to lower case.
+ *
+ * TODO: Configurable locale support.
+ *
+ * @tparam TChar Type of character to use.
+ * @param s String to be converted.
+ * @return Converted string.
+ */
 template <typename TChar>
-constexpr static const std::basic_string<TChar> tolower_copy(const std::basic_string<TChar>& s) {
-  std::basic_string<TChar> temp(s); 
+constexpr static std::basic_string<TChar> tolower(const std::basic_string<TChar>& s) {
+  std::basic_string<TChar> temp(s);
   std::transform(temp.begin(), temp.end(), temp.begin(), std::tolower );
   return temp;
 }

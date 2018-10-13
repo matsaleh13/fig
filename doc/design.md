@@ -76,14 +76,13 @@ Responsible for providing access to key/value data to be used in dynamic substit
 
 - `IVariableIterator Variables()` Returns an iterator over the collection of variable key/value data.
 
-### IFigKey
+### FigKey
 
 Abstraction for describing a unique identifier of an IFigNode.
 
-#### IFigKey Methods
+#### FigKey Methods
 
 - `std::wstring Uri()` Returns the key formatted as a URI.
-- `uint64_t Hash()` Returns a stable hash of the key to be used in hash maps.
 
 ## Supporting Abstractions
 

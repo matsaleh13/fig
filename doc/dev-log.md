@@ -367,3 +367,25 @@
   - Even better [C++11 rvalues and move semantics confusion (return statement)](https://stackoverflow.com/questions/4986673/c11-rvalues-and-move-semantics-confusion-return-statement)
   - So, as long as std::basic_string has a move constructor/assignment, we should be good. It's actually automatic, and I don't need to jump through hoops. RVO (return value optimization)  means that if a function returns a non-reference type, it does not incur either copy or move overhead (as an optimization, if possible). If not possible, then if the return type has move semantics, the compiler will invoke that. Only when both RVO fails and there is no move support will the compiler invoke the copy operation. It almost sounds too good to be true.
   
+## 2018-10-13
+
+- Resumed iterating on FigKey tests:
+  - `operator==()` and `operator<()`
+  - TODO: do we need other comparisons? Not for maps, we don't.
+  - `std::hash()` overload - had a bit of trouble with template expansion; basically I couldn't see my problem until I typedefed a few things down to a manageable string. Turns out I had done:
+
+    ```c++
+    std::hash<KeyType>(myKey)();
+    ```
+
+  - instead of:
+
+    ```c++
+    std::hash<KeyType>()(myKey);
+    ```
+- Started working on FigValue:
+  - Templatized class for native type (probalby some kind of basic_string<T>).
+  - Template-specialized conversion versions of get<T>().
+  - Iterating on tests.
+  - Lots of template related compiler errors.
+  - WIP.

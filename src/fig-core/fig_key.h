@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <string>
 
 #include "string_helpers.h"
@@ -10,8 +11,8 @@ namespace core {
 /**
  * @brief Responsible for describing a unique identifier that supports path-like
  * semantics and unique hashing.
- * 
- * NOTE: FigKey names are case-sensitive by default.
+ *
+ * NOTE: FigKey names are case-insensitive by default.
  *
  */
 template <typename TString = std::string>
@@ -31,7 +32,7 @@ private:
 
 template <typename TString>
 constexpr FigKey<TString>::FigKey(const TString& name)
-    : m_name(name) { fig::util::tolower(m_name); }
+    : m_name(fig::util::tolower(name)) {}
 
 template <typename TString>
 constexpr bool FigKey<TString>::operator==(const FigKey<TString>& other) const {

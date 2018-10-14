@@ -3,46 +3,49 @@
 namespace fig {
 namespace util {
 
-template <typename T, typename E>
+template <typename TValue, typename TError>
 class Result {
 public:
-  constexpr explicit Result(const T& value);
-  constexpr explicit Result(const E& error);
+  using value_type = TValue;
+  using error_type = TError;
+
+  constexpr explicit Result(const value_type& value);
+  constexpr explicit Result(const error_type& error);
   Result() = delete;
 
   constexpr explicit operator bool() const;
 
-  constexpr const T& value() const;
-  constexpr const E& error() const;
+  constexpr const value_type& value() const;
+  constexpr const error_type& error() const;
 
 private:
   constexpr void ensure_checked() const;
 
   union {
-    const T m_value;
-    const E m_error;
+    const value_type m_value;
+    const error_type m_error;
   };
 
   const bool m_isError;
   mutable bool m_checked = false;
 };
 
-template <typename T, typename E>
-constexpr Result<T, E>::Result(const T& value)
+template <typename TValue, typename TError>
+constexpr Result<TValue, TError>::Result(const TValue& value)
     : m_value(value), m_isError(false), m_checked(false) {}
 
-template <typename T, typename E>
-constexpr Result<T, E>::Result(const E& error)
+template <typename TValue, typename TError>
+constexpr Result<TValue, TError>::Result(const TError& error)
     : m_error(error), m_isError(true), m_checked(false) {}
 
-template <typename T, typename E>
-inline constexpr Result<T, E>::operator bool() const {
+template <typename TValue, typename TError>
+inline constexpr Result<TValue, TError>::operator bool() const {
   m_checked = true;
   return (m_isError == false);
 }
 
-template <typename T, typename E>
-inline constexpr const T& Result<T, E>::value() const {
+template <typename TValue, typename TError>
+inline constexpr const TValue& Result<TValue, TError>::value() const {
   assert(m_checked);
   ensure_checked();
 
@@ -50,8 +53,8 @@ inline constexpr const T& Result<T, E>::value() const {
   return m_value;
 }
 
-template <typename T, typename E>
-inline constexpr const E& Result<T, E>::error() const {
+template <typename TValue, typename TError>
+inline constexpr const TError& Result<TValue, TError>::error() const {
   assert(m_checked);
   ensure_checked();
 
@@ -59,8 +62,8 @@ inline constexpr const E& Result<T, E>::error() const {
   return m_error;
 }
 
-template <typename T, typename E>
-inline constexpr void Result<T, E>::ensure_checked() const {
+template <typename TValue, typename TError>
+inline constexpr void Result<TValue, TError>::ensure_checked() const {
   if (!m_checked) throw ResultNotCheckedError("Result is not checked; call Result::operator bool() before calling accessors.");
 }
 

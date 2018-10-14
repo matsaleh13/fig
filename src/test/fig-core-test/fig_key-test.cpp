@@ -61,7 +61,7 @@ TYPED_TEST(FigKeyTypedFixture, create_key_from_basic_string) {
   using StringType = typename FigKeyTypedFixture::StringType;
   using KeyType = fig::core::FigKey<StringType>;
 
-  KeyType k(this->input_key_name());
+  KeyType k(StringType(this->input_key_name()));
 
   ASSERT_EQ(k.name(), StringType(this->test_key_name()));
 }

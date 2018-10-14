@@ -389,3 +389,48 @@
   - Iterating on tests.
   - Lots of template related compiler errors.
   - WIP.
+
+## 2018-10-14
+
+- Continued FigValue implementation.
+- Having issues with template specialization:
+  - Learned that a template class with a template member function cannot partially specialize the template member function.
+  - Workaround is to add another level of indirection (of course) by creating a template struct(class) taking both template params, and then declaring a function in terms of both of the template params.
+  - Example:
+
+  ```c++
+    template <typename T>
+    class Foo {
+    public:
+      template <typename R>
+      R foo ();
+    };
+
+    // Illegal
+    template<typename T, int>
+    int Foo<T>::foo<int>();
+
+    // OK
+    template<typename T>
+    template<typename R>
+    R Foo<T>::foo<R>() {
+      return FooHelper<T>::help_foo<R>();
+    }
+
+    template<typename T, typename R>
+    struct FooHelper {
+      static R help_foo();
+    };
+
+    // specialized for int
+    template<typename T>
+    struct FooHelper<T, int> {
+      static int help_foo();
+    }
+
+  ```
+
+  - Added tests for all combinations of FigValue<TValue> in std::string, std::wstring with conversions for [un]signed int, long, and float/double/long double.
+- Trying to be more consistent with template param names, now e.g. TValue, TError, TResult instead of T, E, R. 
+- Also thinking it's good to have a using value_type = TValue in at least FigKey and FigValue.
+

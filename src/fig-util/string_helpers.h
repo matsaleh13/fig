@@ -4,6 +4,10 @@
 #include <string>
 #include <cctype>
 
+// Enable "safe" string functions.
+#define __STDC_WANT_LIB_EXT1__ 1
+#include <wchar.h>  // std C
+
 namespace fig {
 namespace util {
 
@@ -30,7 +34,7 @@ constexpr static std::string string_format(const std::string& format,
   if (buf_size < MinBufSize) {
     return {buf, buf + buf_size - 1};
   } else {
-    // Need bigger buffer, so now we allcate.
+    // Need bigger buffer, so now we allocate.
     std::unique_ptr<char[]> buf_ptr(new char[buf_size]);
     std::snprintf(buf_ptr.get(), buf_size, format.c_str(), args...);
     return {buf_ptr.get(), buf_ptr.get() + buf_size - 1};
@@ -90,6 +94,43 @@ constexpr static std::basic_string<TChar> tolower(const std::basic_string<TChar>
   return temp;
 }
 
+/**
+ * @brief Convert multibyte character string to wide-character string.
+ * 
+ * @param value Multibyte-character string to convert.
+ * @return std::string Converted wide-character string.
+ */
+// TODO: constexpr
+static std::wstring string_to_wstring(const std::string& value) {
+    std::mbstate_t state = std::mbstate_t();
+    const char* pvalue = value.c_str();
+    size_t len = 0;
+    errno_t err = mbsrtowcs_s(&len, nullptr, 0, &pvalue, 0, &state);
+    len += 1;
+    std::vector<wchar_t> wcstr(len);
+    mbsrtowcs_s(&len, &wcstr[0], len, &pvalue, wcstr.size(), &state);
+    
+    return { &wcstr[0] };
+}
+
+
+/**
+ * @brief Convert wide-character string to multibyte-character string.
+ * 
+ * @param value Wide-character string to convert.
+ * @return std::string Converted multibyte-character string.
+ */
+// TODO: constexpr
+static std::string wstring_to_string(const std::wstring& value) {
+    std::mbstate_t state = std::mbstate_t();
+    const wchar_t* pvalue = value.c_str();
+    size_t len = 0;
+    errno_t err  = wcsrtombs_s(&len, nullptr, 0, &pvalue, 0, &state);
+    std::vector<char> mbstr(len);
+    wcsrtombs_s(&len, &mbstr[0], len, &pvalue, mbstr.size(), &state);
+    
+    return { &mbstr[0] };
+}
 
 } // namespace util
 } // namespace fig

@@ -2,8 +2,10 @@
 
 #include "error.h"
 #include "result.h"
+#include "string_helpers.h"
 
 #include <string>
+#include <cwchar>
 
 namespace fig {
 namespace core {
@@ -142,6 +144,37 @@ struct FigValueConverter<TValue, long double> {
     return std::stold(value);
   }
 };
+
+template <typename TValue>
+struct FigValueConverter<TValue, std::string> {
+  constexpr static std::string convert(const TValue& value) {
+    return fig::util::wstring_to_string(value);
+  }
+};
+
+template <typename TValue>
+struct FigValueConverter<TValue, std::wstring> {
+  constexpr static std::wstring convert(const TValue& value) {
+    return fig::util::string_to_wstring(value);
+  }
+};
+
+// No-op / pass-through
+template <>
+struct FigValueConverter<std::string, std::string> {
+  constexpr static const std::string& convert(const std::string& value) {
+    return value;
+  }
+};
+
+// No-op / pass-through
+template <>
+struct FigValueConverter<std::wstring, std::wstring> {
+  constexpr static const std::wstring& convert(const std::wstring& value) {
+    return value;
+  }
+};
+
 
 } // namespace core
 } // namespace fig

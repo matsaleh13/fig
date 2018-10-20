@@ -238,3 +238,25 @@ TEST(string_helpers, tolower_return_using_std_wstring) {
 
   ASSERT_EQ(convert, std::wstring(expected));
 }
+
+//
+// fig::util::[w]string_to[w]string
+//
+
+TEST(string_helpers, string_to_wstring) {
+  const char* input = "But I'm not dead.";
+  const wchar_t* expected = L"But I'm not dead.";
+
+  auto convert = fig::util::string_to_wstring(input);
+
+  ASSERT_EQ(convert, std::wstring(expected));
+}
+
+TEST(string_helpers, wstring_to_string) {
+  const wchar_t* input = L"I didn't vote for you.";
+  const char* expected = "I didn't vote for you.";
+
+  auto convert = fig::util::wstring_to_string(input);
+
+  ASSERT_EQ(convert, std::string(expected));
+}

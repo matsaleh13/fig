@@ -8,6 +8,7 @@ public:
   const TChar* input_value_int_type();
   const TChar* input_value_unsigned_type();
   const TChar* input_value_float_type();
+  const TChar* input_value_string_type();
 
   int test_value_int = 42;
   long test_value_long = 42L;
@@ -20,6 +21,9 @@ public:
   float test_value_float = 42.42f;
   double test_value_double = 42.42;
   long double test_value_long_double = 42.42;
+
+  const char* test_value_char_string = "The rain in Spain falls ma\u00F1ana.";
+  const wchar_t* test_value_wchar_string = L"The rain in Spain falls ma\u00F1ana.";
 
   typedef std::basic_string<TChar> StringType;
 };
@@ -52,6 +56,16 @@ const char* FigValueTypedFixture<char>::input_value_float_type() {
 template <>
 const wchar_t* FigValueTypedFixture<wchar_t>::input_value_float_type() {
   return L"42.42";
+}
+
+template <>
+const char* FigValueTypedFixture<char>::input_value_string_type() {
+  return "The rain in Spain falls ma\u00F1ana.";
+}
+
+template <>
+const wchar_t* FigValueTypedFixture<wchar_t>::input_value_string_type() {
+  return L"The rain in Spain falls ma\u00F1ana.";
 }
 
 using MyTypes = ::testing::Types<char, wchar_t>;
@@ -123,4 +137,14 @@ TYPED_TEST(FigValueTypedFixture, get_as_float_types) {
   ASSERT_EQ(v.get<float>(), this->test_value_float);
   ASSERT_EQ(v.get<double>(), this->test_value_double);
   ASSERT_EQ(v.get<long double>(), this->test_value_long_double);
+}
+
+TYPED_TEST(FigValueTypedFixture, get_as_string_types) {
+  using StringType = FigValueTypedFixture::StringType;
+  using ValueType = fig::core::FigValue<StringType>;
+
+  ValueType v(this->input_value_string_type());
+
+  ASSERT_EQ(v.get<std::wstring>(), this->test_value_wchar_string);
+  ASSERT_EQ(v.get<std::string>(), this->test_value_char_string);
 }

@@ -434,3 +434,18 @@
 - Trying to be more consistent with template param names, now e.g. TValue, TError, TResult instead of T, E, R. 
 - Also thinking it's good to have a using value_type = TValue in at least FigKey and FigValue.
 
+## 2018-10-20
+
+- Switched back to C++ 14, because reasons.
+- Looking into FigValue conversions between char and wchar_t:
+  - Using the std::mbsrtowcs/wcsrtombs variants (instead of the non-r ones) for thread safety.
+  - Getting compiler warning (ergo, failure) on Windows:
+
+  ```shell
+  warning C4996: 'wcsrtombs': This function or variable may be unsafe. Consider using wcsrtombs_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  ```
+
+  - Seems the standard C++ implmentation doesn't have a "safe" version, but the C implementation does.
+  - I don't want to use Windows-specific implementations, nor C if I can avoid it. Bah.
+  - Ended up choosing the C implementation as the lesser of the evils. Wrapped it in some static functions in string_helpers.h, with tests. Works.
+  - NOTE: for some reason these functions can't be constexpr because string and wstring "aren't literal types". Well I call BS on that, becuase other functions that take those types in that same file are constexpr. TODO: investigate.

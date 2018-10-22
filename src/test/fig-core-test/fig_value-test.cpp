@@ -23,7 +23,8 @@ public:
   long double test_value_long_double = 42.42;
 
   const char* test_value_char_string = "The rain in Spain falls ma\u00F1ana.";
-  const wchar_t* test_value_wchar_string = L"The rain in Spain falls ma\u00F1ana.";
+  const wchar_t* test_value_wchar_string =
+      L"The rain in Spain falls ma\u00F1ana.";
 
   typedef std::basic_string<TChar> StringType;
 };
@@ -71,12 +72,23 @@ const wchar_t* FigValueTypedFixture<wchar_t>::input_value_string_type() {
 using MyTypes = ::testing::Types<char, wchar_t>;
 TYPED_TEST_CASE(FigValueTypedFixture, MyTypes);
 
+
+//
+// Create FigValue Tests
+//
+
+template <typename TString>
+static void CheckGetNativeValue(const fig::core::FigValue<TString>& v,
+                                const TString& test) {
+  EXPECT_EQ(v.get(), test);
+}
+
 TYPED_TEST(FigValueTypedFixture, create_value_from_const_char) {
   using StringType = FigValueTypedFixture::StringType;
   using ValueType = fig::core::FigValue<StringType>;
 
   ValueType v(this->input_value_int_type());
-  ASSERT_EQ(v.get(), this->input_value_int_type());
+  CheckGetNativeValue<StringType>(v, this->input_value_int_type());
 }
 
 TYPED_TEST(FigValueTypedFixture, create_value_from_basic_string) {
@@ -84,7 +96,7 @@ TYPED_TEST(FigValueTypedFixture, create_value_from_basic_string) {
   using ValueType = fig::core::FigValue<StringType>;
 
   ValueType v(StringType(this->input_value_int_type()));
-  ASSERT_EQ(v.get(), this->input_value_int_type());
+  CheckGetNativeValue<StringType>(v, this->input_value_int_type());
 }
 
 TYPED_TEST(FigValueTypedFixture, create_value_with_init) {
@@ -92,8 +104,7 @@ TYPED_TEST(FigValueTypedFixture, create_value_with_init) {
   using ValueType = fig::core::FigValue<StringType>;
 
   ValueType v = StringType(this->input_value_int_type());
-
-  ASSERT_EQ(v.get(), this->input_value_int_type());
+  CheckGetNativeValue<StringType>(v, this->input_value_int_type());
 }
 
 TYPED_TEST(FigValueTypedFixture, create_value_default_then_assign) {
@@ -102,8 +113,25 @@ TYPED_TEST(FigValueTypedFixture, create_value_default_then_assign) {
 
   ValueType v;
   v = StringType(this->input_value_int_type());
+  CheckGetNativeValue<StringType>(v, this->input_value_int_type());
+}
 
-  ASSERT_EQ(v.get(), this->input_value_int_type());
+//
+// get<TValue> and get_safe<TValue> tests.
+//
+
+template <typename TString, typename TValue>
+static void CheckGetConvertedValue(const fig::core::FigValue<TString>& v,
+                                   const TValue& test) {
+
+  EXPECT_EQ(v.get<TValue>(), test);
+
+  auto r = v.get_safe<TValue>();
+  if (r) {
+    EXPECT_EQ(r.value(), test);
+  } else {
+    GTEST_FAIL();
+  }
 }
 
 TYPED_TEST(FigValueTypedFixture, get_as_int_types) {
@@ -112,9 +140,9 @@ TYPED_TEST(FigValueTypedFixture, get_as_int_types) {
 
   ValueType v(this->input_value_int_type());
 
-  ASSERT_EQ(v.get<int>(), this->test_value_int);
-  ASSERT_EQ(v.get<long>(), this->test_value_long);
-  ASSERT_EQ(v.get<long long>(), this->test_value_long_long);
+  CheckGetConvertedValue<StringType, int>(v, this->test_value_int);
+  CheckGetConvertedValue<StringType, long>(v, this->test_value_long);
+  CheckGetConvertedValue<StringType, long long>(v, this->test_value_long_long);
 }
 
 TYPED_TEST(FigValueTypedFixture, get_as_unsigned_types) {
@@ -123,9 +151,9 @@ TYPED_TEST(FigValueTypedFixture, get_as_unsigned_types) {
 
   ValueType v(this->input_value_unsigned_type());
 
-  ASSERT_EQ(v.get<unsigned int>(), this->test_value_unsigned_int);
-  ASSERT_EQ(v.get<unsigned long>(), this->test_value_unsigned_long);
-  ASSERT_EQ(v.get<unsigned long long>(), this->test_value_unsigned_long);
+  EXPECT_EQ(v.get<unsigned int>(), this->test_value_unsigned_int);
+  EXPECT_EQ(v.get<unsigned long>(), this->test_value_unsigned_long);
+  EXPECT_EQ(v.get<unsigned long long>(), this->test_value_unsigned_long);
 }
 
 TYPED_TEST(FigValueTypedFixture, get_as_float_types) {
@@ -134,9 +162,9 @@ TYPED_TEST(FigValueTypedFixture, get_as_float_types) {
 
   ValueType v(this->input_value_float_type());
 
-  ASSERT_EQ(v.get<float>(), this->test_value_float);
-  ASSERT_EQ(v.get<double>(), this->test_value_double);
-  ASSERT_EQ(v.get<long double>(), this->test_value_long_double);
+  EXPECT_EQ(v.get<float>(), this->test_value_float);
+  EXPECT_EQ(v.get<double>(), this->test_value_double);
+  EXPECT_EQ(v.get<long double>(), this->test_value_long_double);
 }
 
 TYPED_TEST(FigValueTypedFixture, get_as_string_types) {
@@ -145,6 +173,6 @@ TYPED_TEST(FigValueTypedFixture, get_as_string_types) {
 
   ValueType v(this->input_value_string_type());
 
-  ASSERT_EQ(v.get<std::wstring>(), this->test_value_wchar_string);
-  ASSERT_EQ(v.get<std::string>(), this->test_value_char_string);
+  EXPECT_EQ(v.get<std::wstring>(), this->test_value_wchar_string);
+  EXPECT_EQ(v.get<std::string>(), this->test_value_char_string);
 }

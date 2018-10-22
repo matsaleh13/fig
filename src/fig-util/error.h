@@ -2,6 +2,8 @@
 
 #include <string>
 
+#include "string_helpers.h"
+
 namespace fig {
 namespace util {
 
@@ -14,6 +16,7 @@ public:
   constexpr explicit Error(const std::string& what, const std::string& file,
                            uint32_t line);
   Error() = delete;
+  ~Error() {}
 
   constexpr const std::string& what() const { return m_what; }
   constexpr const std::string& file() const { return m_file; }
@@ -32,3 +35,8 @@ constexpr Error::Error(const std::string& what, const std::string& file,
 
 } // namespace util
 } // namespace fig
+
+
+#define FIG_ERROR(msg, ...) \
+  (fig::util::Error(FORMAT_STRING(msg, __VA_ARGS__), __FILE__, __LINE__))
+

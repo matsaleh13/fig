@@ -1,5 +1,7 @@
 #pragma once
 
+#include "result_error.h"
+
 namespace fig {
 namespace util {
 
@@ -9,9 +11,10 @@ public:
   using value_type = TValue;
   using error_type = TError;
 
-  constexpr explicit Result(const value_type& value);
-  constexpr explicit Result(const error_type& error);
+  constexpr Result(const value_type& value);
+  constexpr Result(const error_type& error);
   Result() = delete;
+  ~Result() {}
 
   constexpr explicit operator bool() const;
 

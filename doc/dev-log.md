@@ -449,3 +449,41 @@
   - I don't want to use Windows-specific implementations, nor C if I can avoid it. Bah.
   - Ended up choosing the C implementation as the lesser of the evils. Wrapped it in some static functions in string_helpers.h, with tests. Works.
   - NOTE: for some reason these functions can't be constexpr because string and wstring "aren't literal types". Well I call BS on that, becuase other functions that take those types in that same file are constexpr. TODO: investigate.
+
+## 2018-10-21
+
+- Refactored the `FigValueConverter` out of `fig_value.h` and into its own header in `fig-util`.
+- Also renamed it to `StringConverter`.
+- Wrote dedicated test file: `string_converter-test.cpp`, and migrated much of the tests from `fig_value-test.cpp` to it, since the StringConverter is doing most of that work.
+- Pulling my hair out because of a compiler error (that first showed up before the refactor):
+
+  ```shell
+
+  [build] E:\Dev\Fig\fig\src\test\fig-util-test\string_converter-test.cpp(87): error C2039: 'convert_safe': is not a member of 'fig::util::StringConverter<StringType,int>'
+  [build] E:\Dev\Fig\fig\src\test\fig-util-test\string_converter-test.cpp(84): note: see declaration of 'fig::util::StringConverter<StringType,int>'
+
+  ```
+
+  - However, tell me where `convert_safe` isn't declared, dammit:
+
+  ```c++
+  template <typename TValue, typename TRValue>
+  struct StringConverter {
+
+    constexpr static TRValue convert(const TValue& value);
+
+    // Exception safe version.
+    constexpr static Result<TRValue, Error> convert_safe(const TValue& value) noexcept {
+      try {
+        return convert<TRValue>(value);
+      } catch (std::exception e) {
+        return FIG_ERROR("Invalid conversion of value: [%s]", e.what());
+      }
+    }
+  };
+  ```
+
+  - After much debugging, I finally figured out that it was (incomplete) template specialization that was causing the error. 
+  - The StringConverter<>::convert_safe() had an implementation already, so I didn't consider that at all. However, experimenting showed me that the generic implementation wasn't being called at all. I had to write a specialized version for <TValue, int> to get it to compile. 
+  - Not sure why the generic implementation wasn't being called, because, IMO the signature should have matched.
+  - Could it be that, because I had specialized the convert() method, I also had to specialize the convert_safe() one? TODO: look into this some more.

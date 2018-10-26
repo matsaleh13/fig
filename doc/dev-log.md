@@ -1,9 +1,5 @@
 # Fig Dev Log
 
-## `${date} ${time}`
-
-`${log_entry} [${log_entry} ...]`
-
 ## 2018.08.26
 
 - Setup Git repo.
